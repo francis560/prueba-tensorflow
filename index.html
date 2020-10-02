@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>CrudAngularTensorflow</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/p5.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.dom.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.9.0/addons/p5.sound.min.js"></script>
+  <!-- ml5 -->
+  <script src="https://unpkg.com/ml5@0.4.3/dist/ml5.min.js"></script>
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#1976d2">
+<link rel="stylesheet" href="styles.269ecf4a916c9dcd8907.css"></head>
+<body>
+  <app-root></app-root>
+
+  <p id="estado">Cargando modelo...</p>
+  <p>
+      Esto es un <strong> <span id="resultado">...</span></strong><br/>
+      Con una probabilidad de <strong><span id="probabilidad">...</span>%</strong>.
+  </p>
+
+  <script>
+  let clasificador;
+  let video;
+
+  function setup () {
+    noCanvas();
+    video = createCapture(VIDEO);
+    clasificador = ml5.imageClassifier('MobileNet', video, modeloListo);
+  }
+
+  function modeloListo() {
+      select('#estado').html('Modelo cargado');
+      clasificarVideo();
+  }
+
+  function clasificarVideo() {
+      clasificador.predict(tomaResultado);
+  }
+
+  function tomaResultado(err, resultado) {
+      select('#resultado').html(resultado[0].label);
+      select('#probabilidad').html(nf(resultado[0].confidence, 0, 2));
+      clasificarVideo();
+  }
+  </script>
+  <noscript>Please enable JavaScript to continue using this application.</noscript>
+<script src="runtime.e227d1a0e31cbccbf8ec.js" defer></script><script src="polyfills.a4021de53358bb0fec14.js" defer></script><script src="main.918115bfa2bd61bb5a4d.js" defer></script></body>
+</html>
